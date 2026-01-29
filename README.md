@@ -1,21 +1,23 @@
-# quack-go
+# quackai (WIP)
 
-Highly experimental Go implementation of the [DuckDB quack extension](https://duckdb.org/community_extensions/extensions/quack).
+An experimental DuckDB extension that enhances columns in a given table using one or multiple AI prompts via Claude Haiku. 
 
 ## Usage
 
-Run `make` to build the extension or `make test` to build then load the extension into DuckDB and run the quack function.
+Run `make` to build the extension or `make test` to build and then load the extension into DuckDB and run the aillm function.
+Run `make arrow` to run a standalone executable that reads an arrow file and processes the prompts either single, fused, or batches.
+
+Single processes the columns row by row and by prompts.
+Fuse joins the prompts into a single prompt (prompt1;prompt;..) and executes row by row, but with only one request
+Batch execute each column in a single batch.
+
+A dispatcher manages prompts (no duplicates via caching) using go routines, simple error checking, and retry.
 
 ## Project Layout
 
-- `quack.go`: Pure extension logic - the `quack` scalar function implementation
-- `duckdbext/`: Reusable framework for registering scalar functions, and dispatching callbacks
-- `cbridge.go`: Extension entry point, initialization, function registration, and CGO trampolines
-- Uses [duckdb-go-bindings](https://github.com/duckdb/duckdb-go-bindings) for all DuckDB C API calls
-  - Type-safe wrappers for `Vector`, `DataChunk`, `LogicalType`, etc.
-  - All data manipulation APIs (no manual C pointer arithmetic!)
-  - Memory-safe string handling (no manual `C.CString`/`C.free`)
-  - Function registration APIs
+Set the following system-wide:
+- `QUACK_LLM_MODE=single|fused|batch`
+- `ANTHROPIC_API_KEY=your-key` 
 
 ## Platform Notes
 

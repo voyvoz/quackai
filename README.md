@@ -1,6 +1,8 @@
 # quackai (WIP)
 
-An experimental DuckDB extension that enhances columns in a given table using one or multiple AI prompts via Claude Haiku. 
+An experimental DuckDB extension written in Go that enhances columns in a given table using one or multiple AI prompts via Claude Haiku. 
+
+Based on: `[make](https://github.com/mlafeldt/quack-go)`
 
 ## Usage
 
